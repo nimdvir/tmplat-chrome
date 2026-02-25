@@ -278,6 +278,8 @@ isNewInstall      = no
 isProductionBuild = EXTENSION_ID is REAL_EXTENSION_ID
 # Name of the user's operating system.
 operatingSystem   = ''
+# Indicate whether the context menu click listener has been registered.
+contextMenuListenerBound = no
 
 # Private functions
 # -----------------
@@ -293,10 +295,19 @@ executeScriptsInExistingWindows = ->
     # Check tabs are not displaying a *protected* page (i.e. one that will cause an error if an
     # attempt is made to execute content scripts).
     for tab in tabs when not isProtectedPage tab
-      chrome.tabs.executeScript tab.id, file: 'lib/content.js'
+      chrome.scripting.executeScript
+        files: ['lib/content.js']
+        target: tabId: tab.id
+      , ->
+        chrome.runtime.lastError
       # Only execute inline installation content script for tabs displaying a page on Template's
       # homepage domain.
-      chrome.tabs.executeScript tab.id, file: 'lib/install.js' if HOMEPAGE_DOMAIN in tab.url
+      if HOMEPAGE_DOMAIN in tab.url
+        chrome.scripting.executeScript
+          files: ['lib/install.js']
+          target: tabId: tab.id
+        , ->
+          chrome.runtime.lastError
 
 # Attempt to derive the current version of the user's browser.
 getBrowserVersion = ->
@@ -368,7 +379,7 @@ isProtectedPage = (tab) ->
 isSpecialPage = (tab) ->
   log.trace()
 
-  return yes for protocol in ['chrome', 'view-source'] when not tab.url.indexOf protocol
+  return yes for protocol in ['about', 'chrome', 'chrome-extension', 'devtools', 'edge', 'view-source'] when not tab.url.indexOf protocol
   no
 
 # Determine whether or not `tab` is currently displaying a page on the Chrome Web Store.
@@ -403,7 +414,7 @@ onMessage = (message, sender, sendResponse) ->
     selectOrCreateTab utils.url 'pages/options.html'
     # Close the popup if it's currently open. This *should* happen naturally but is being forced to
     # ensure consistency.
-    chrome.extension.getViews(type: 'popup')[0]?.close()
+    chrome.extension?.getViews?(type: 'popup')?[0]?.close()
     return do callback
 
   # Info requests are simple, just send some useful information back. Done!
@@ -620,7 +631,8 @@ onMessage = (message, sender, sendResponse) ->
       # enabled, and that a field was within the context of the template's activation.
       if not isProtectedPage(active) and (editable and store.get 'menu.paste') or
           (shortcut and store.get 'shortcuts.paste')
-        chrome.tabs.sendMessage active.id, {contents: output, id, type: 'paste'}
+        chrome.tabs.sendMessage active.id, {contents: output, id, type: 'paste'}, ->
+          chrome.runtime.lastError
 
     log.debug "Finished handling a #{type} request"
 
@@ -724,7 +736,8 @@ updateHotkeys = ->
     # Check tabs are not displaying a *protected* page (i.e. one that will cause an error if an
     # attempt is made to send a message to it).
     for tab in tabs when not isProtectedPage tab
-      chrome.tabs.sendMessage tab.id, {hotkeys}
+      chrome.tabs.sendMessage tab.id, {hotkeys}, ->
+        chrome.runtime.lastError
 
 # Update the popup UI state to reflect the progress of the current request.  
 # Ignore `percent` if `toggle` is specified; otherwise update the percentage on the progress bar
@@ -733,7 +746,8 @@ updateHotkeys = ->
 updateProgress = (percent, toggle) ->
   log.trace()
 
-  popup       = $ chrome.extension.getViews(type: 'popup')[0]
+  popupView   = chrome.extension?.getViews?(type: 'popup')?[0]
+  popup       = if popupView then $ popupView else $()
   templates   = if popup.length then $ '#templates', popup[0].document else $()
   loading     = if popup.length then $ '#loading',   popup[0].document else $()
   progressBar = loading.find '.bar'
@@ -1944,15 +1958,23 @@ ext = window.ext = new class Extension extends utils.Class
       do initStatistics
       do initUrlShorteners
 
+      unless contextMenuListenerBound
+        chrome.contextMenus.onClicked.addListener (info, tab) ->
+          if info.menuItemId is 'template-options'
+            onMessage type: 'options'
+          else
+            onMessage data: info, type: 'menu'
+        contextMenuListenerBound = yes
+
       # Add listener for toolbar/browser action clicks.  
       # This listener will be ignored whenever the popup is enabled.
-      chrome.browserAction.onClicked.addListener (tab) ->
+      chrome.action.onClicked.addListener (tab) ->
         onMessage
           data: key: store.get 'toolbar.key'
           type: 'toolbar'
       # Add listeners for internal and external messages.
-      chrome.extension.onMessage.addListener onMessage
-      chrome.extension.onMessageExternal.addListener onMessageExternal
+      chrome.runtime.onMessage.addListener onMessage
+      chrome.runtime.onMessageExternal.addListener onMessageExternal
 
       # Derive the browser and OS information.
       browser.version = do getBrowserVersion
@@ -2006,11 +2028,6 @@ ext = window.ext = new class Extension extends utils.Class
 
     # Ensure that any previously added context menu items are removed.
     chrome.contextMenus.removeAll =>
-      # Called whenever a template menu item is clicked.  
-      # Message self, passing along the available information.
-      onMenuClick = (info, tab) ->
-        onMessage data: info, type: 'menu'
-
       menu = store.get 'menu'
 
       # Stop now if the context menu is disabled.
@@ -2018,6 +2035,7 @@ ext = window.ext = new class Extension extends utils.Class
 
       # Create and add the top-level Template menu.
       parentId = chrome.contextMenus.create
+        id:       'template-root'
         contexts: ['all']
         title:    i18n.get 'name'
 
@@ -2025,8 +2043,8 @@ ext = window.ext = new class Extension extends utils.Class
       for template in @templates when template.enabled
         notEmpty = yes
         menuId   = chrome.contextMenus.create
+          id:       "template-item-#{template.key}"
           contexts: ['all']
-          onclick:  onMenuClick
           parentId: parentId
           title:    template.title
         template.menuId = menuId
@@ -2034,6 +2052,7 @@ ext = window.ext = new class Extension extends utils.Class
       # Indicate that no templates have been enabled.
       unless notEmpty
         chrome.contextMenus.create
+          id:       'template-empty'
           contexts: ['all']
           parentId: parentId
           title:    i18n.get 'empty'
@@ -2041,14 +2060,14 @@ ext = window.ext = new class Extension extends utils.Class
       # Add an item to open the options page if the user doesn't mind.
       if menu.options
         chrome.contextMenus.create
+          id:       'template-separator'
           contexts: ['all']
           parentId: parentId
           type:     'separator'
 
         chrome.contextMenus.create
+          id:       'template-options'
           contexts: ['all']
-          onclick:  (info, tab) ->
-            onMessage type: 'options'
           parentId: parentId
           title:    i18n.get 'options'
 
@@ -2077,11 +2096,11 @@ ext = window.ext = new class Extension extends utils.Class
     if not template or store.get 'toolbar.popup'
       log.info 'Configuring toolbar to display popup'
       # Show the popup when the browser action is clicked.
-      chrome.browserAction.setPopup popup: 'pages/popup.html'
+      chrome.action.setPopup popup: 'pages/popup.html'
     else
       log.info 'Configuring toolbar to activate specified template'
-      # Disable the popup, effectively enabling the listener for `chrome.browserAction.onClicked`.
-      chrome.browserAction.setPopup popup: ''
+      # Disable the popup, effectively enabling the listener for `chrome.action.onClicked`.
+      chrome.action.setPopup popup: ''
 
 # Public classes
 # --------------
@@ -2092,8 +2111,8 @@ ext.Icon = class Icon extends utils.Class
   # Create a new instance of `Icon` with the specified `name`.  
   # An appropriate localized message and CSS style is also derived.
   constructor: (@name) ->
-    @message = i18n.get "icon_#{name?.replace(/-/g, '_') or 'none'}"
-    @style   = "icon-#{name or ''}"
+    @message = i18n.get "icon_#{@name?.replace(/-/g, '_') or 'none'}"
+    @style   = "icon-#{@name or ''}"
 
 # Determine whether an `Icon` with the given `name` exists.
 Icon.exists = (name) ->

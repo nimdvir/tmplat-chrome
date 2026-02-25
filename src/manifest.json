@@ -1,8 +1,8 @@
 {
     "background": {
-      "page": "pages/background.html"
+      "service_worker": "lib/service-worker.js"
     }
-  , "browser_action": {
+  , "action": {
         "default_icon": "images/icon_19.png"
       , "default_popup": "pages/popup.html"
       , "default_title": "__MSG_name__"
@@ -12,7 +12,6 @@
             "js": ["lib/content.js"]
           , "matches": [
                 "file:///*/*"
-              , "ftp://*/*"
               , "http://*/*"
               , "https://*/*"
             ]
@@ -33,9 +32,15 @@
         }
     ]
   , "web_accessible_resources": [
-      "pages/oauth2.html"
+      {
+          "resources": [
+              "pages/oauth2.html"
+            ]
+        , "matches": [
+              "<all_urls>"
+            ]
+      }
     ]
-  , "content_security_policy": "script-src 'self' 'unsafe-eval' https://ssl.google-analytics.com https://*.uservoice.com; object-src 'self'"
   , "default_locale": "en"
   , "description": "__MSG_description__"
   , "homepage_url": "http://template-extension.org"
@@ -50,10 +55,13 @@
       , "96": "images/icon_96.png"
       , "128": "images/icon_128.png"
     }
-  , "manifest_version": 2
+  , "manifest_version": 3
   , "minimum_chrome_version": "28"
   , "name": "__MSG_name__"
-  , "options_page": "pages/options.html"
+  , "options_ui": {
+        "page": "pages/options.html"
+        , "open_in_tab": true
+    }
   , "permissions": [
         "clipboardRead"
       , "clipboardWrite"
@@ -61,8 +69,12 @@
       , "cookies"
       , "geolocation"
       , "notifications"
+      , "offscreen"
+      , "scripting"
       , "tabs"
-      , "<all_urls>"
+    ]
+  , "host_permissions": [
+      "<all_urls>"
     ]
   , "version": "1.2.9"
 }

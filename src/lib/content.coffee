@@ -165,7 +165,7 @@ xpath = (expression, format, singular) ->
 
 # Wrap the function functionality in a message for Template's extension ID and current version so
 # that it can be used to detect previous injections.
-chrome.extension.sendMessage type: 'info', (data) ->
+chrome.runtime.sendMessage type: 'info', (data) ->
   hotkeys = data.hotkeys
   isMac   = isThisPlatform 'mac'
 
@@ -189,14 +189,14 @@ chrome.extension.sendMessage type: 'info', (data) ->
       if key in hotkeys
         elements.field = if e.target.nodeName in ['INPUT', 'TEXTAREA'] then e.target else null
 
-        chrome.extension.sendMessage
+        chrome.runtime.sendMessage
           data: key: key
           type: 'shortcut'
         e.preventDefault()
 
   # Add a listener to provide the background page with information that is extracted from the DOM
   # or perform auto-paste functionality.
-  chrome.extension.onMessage.addListener (message, sender, sendResponse) ->
+  chrome.runtime.onMessage.addListener (message, sender, sendResponse) ->
     # Safely handle callback functionality.
     callback = (args...) ->
       if typeof sendResponse is 'function'

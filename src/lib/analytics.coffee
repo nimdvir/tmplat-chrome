@@ -26,13 +26,6 @@ analytics = window.analytics = new class Analytics extends utils.Class
     _gaq.push ['_setAccount', ACCOUNT]
     _gaq.push ['_trackPageview']
 
-    # Inject script to capture analytics.
-    ga = document.createElement 'script'
-    ga.async = 'async'
-    ga.src   = SOURCE
-    script = document.getElementsByTagName('script')[0]
-    script.parentNode.insertBefore ga, script
-
   # Determine whether or not analytics are enabled.
   enabled: ->
     not store? or store.get 'analytics'

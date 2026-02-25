@@ -1,4 +1,5 @@
 body {padding-top: 60px; padding-bottom: 10px;}
+.container, .container label, .container legend, .container p, .container li, .container td, .container th, .container span {color: #333;}
 a {cursor: pointer;}
 a.ref-link {font-weight: bold;}
 a.ref-link:hover {text-decoration: none;}

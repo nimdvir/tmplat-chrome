@@ -21,12 +21,19 @@ R_WHITESPACE     = /\s+/
 # Copy of template being actively modified.
 activeTemplate = null
 # Easily accessible reference to the extension controller as well as it's `Icon` class.
-{ext}          = chrome.extension.getBackgroundPage()
+{ext}          = window
 {Icon}         = ext
 # Indicate whether or not the user feedback feature has been added to the page.
 feedbackAdded  = no
 # Templates matching the current search query.
 searchResults  = null
+
+# Wait until extension configuration has loaded asynchronously.
+waitForExtensionConfig = (callback) ->
+  if ext?.config?.options? and ext?.config?.icons?.current?
+    callback()
+  else
+    setTimeout (-> waitForExtensionConfig callback), 50
 
 # Load functions
 # --------------
@@ -164,7 +171,7 @@ loadLoggerSaveEvents = ->
 
     value
   , (jel, key, value) ->
-    chrome.extension.getBackgroundPage().log.config = log.config = store.get 'logger'
+    log.config = store.get 'logger'
 
     analytics.track 'Logging', 'Changed', utils.capitalize(key), Number value
 
@@ -203,15 +210,12 @@ loadSaveEvents = ->
 
     if enabled
       store.set 'analytics', yes
-      chrome.extension.getBackgroundPage().analytics.add()
-
       analytics.add()
       analytics.track 'General', 'Changed', 'Analytics', 1
     else
       analytics.track 'General', 'Changed', 'Analytics', 0
       analytics.remove()
 
-      chrome.extension.getBackgroundPage().analytics.remove()
       store.set 'analytics', no
 
   bindSaveEvent '#linksTarget, #linksTitle', 'change', 'links', (key) ->
@@ -1782,117 +1786,118 @@ options = window.options = new class Options extends utils.Class
 
     log.info 'Initializing the options page'
 
-    # Add support for analytics if the user hasn't opted out.
-    analytics.add() if store.get 'analytics'
+    return waitForExtensionConfig =>
+      # Add support for analytics if the user hasn't opted out.
+      analytics.add() if store.get 'analytics'
 
-    # Add the user feedback feature to the page.
-    do feedback
+      # Add the user feedback feature to the page.
+      do feedback
 
-    # Begin initialization.
-    i18n.init
-      bitlyAccount:       opt_url_shortener_account_title: i18n.get 'shortener_bitly'
-      googlAccount:       opt_url_shortener_account_title: i18n.get 'shortener_googl'
-      version_definition: opt_guide_standard_version_text: ext.version
+      # Begin initialization.
+      i18n.init
+        bitlyAccount:       opt_url_shortener_account_title: i18n.get 'shortener_bitly'
+        googlAccount:       opt_url_shortener_account_title: i18n.get 'shortener_googl'
+        version_definition: opt_guide_standard_version_text: ext.version
 
-    # Ensure the current year is displayed throughout, where appropriate.
-    $('.year-repl').html "#{new Date().getFullYear()}"
+      # Ensure the current year is displayed throughout, where appropriate.
+      $('.year-repl').html "#{new Date().getFullYear()}"
 
-    # Bind tab selection event to all tabs.
-    initialTabChange = yes
-    $('a[tabify]').on 'click', ->
-      target  = $(this).attr 'tabify'
-      nav     = $ "#navigation a[tabify='#{target}']"
-      parent  = nav.parent 'li'
+      # Bind tab selection event to all tabs.
+      initialTabChange = yes
+      $('a[tabify]').on 'click', ->
+        target  = $(this).attr 'tabify'
+        nav     = $ "#navigation a[tabify='#{target}']"
+        parent  = nav.parent 'li'
 
-      unless parent.hasClass 'active'
-        parent.addClass('active').siblings().removeClass 'active'
-        $(target).show().siblings('.tab').hide()
+        unless parent.hasClass 'active'
+          parent.addClass('active').siblings().removeClass 'active'
+          $(target).show().siblings('.tab').hide()
 
-        id = nav.attr 'id'
-        store.set 'options_active_tab', id
+          id = nav.attr 'id'
+          store.set 'options_active_tab', id
 
-        unless initialTabChange
-          id = utils.capitalize id.match(/(\S*)_nav$/)[1]
-          log.debug "Changing tab to #{id}"
-          analytics.track 'Tabs', 'Changed', id
+          unless initialTabChange
+            id = utils.capitalize id.match(/(\S*)_nav$/)[1]
+            log.debug "Changing tab to #{id}"
+            analytics.track 'Tabs', 'Changed', id
 
-        initialTabChange = no
-        $(document.body).scrollTop 0
+          initialTabChange = no
+          $(document.body).scrollTop 0
 
-    # Reflect the previously persisted tab initially.
-    store.init 'options_active_tab', 'general_nav'
-    optionsActiveTab = store.get 'options_active_tab'
-    $("##{optionsActiveTab}").trigger 'click'
+      # Reflect the previously persisted tab initially.
+      store.init 'options_active_tab', 'general_nav'
+      optionsActiveTab = store.get 'options_active_tab'
+      $("##{optionsActiveTab}").trigger 'click'
 
-    log.debug "Initially displaying tab for #{optionsActiveTab}"
+      log.debug "Initially displaying tab for #{optionsActiveTab}"
 
-    # Bind basic Developer Tools wizard events to their corresponding elements.
-    $('#tools_nav').on 'click', ->
-      $('#tools_wizard').modal 'show'
+      # Bind basic Developer Tools wizard events to their corresponding elements.
+      $('#tools_nav').on 'click', ->
+        $('#tools_wizard').modal 'show'
 
-    $('.tools_close_btn').on 'click', ->
-      $('#tools_wizard').modal 'hide'
+      $('.tools_close_btn').on 'click', ->
+        $('#tools_wizard').modal 'hide'
 
-    # Ensure that form submissions don't reload the page.
-    $('form:not([target="_blank"])').on 'submit', ->
-      # Return `false` to ensure default behaviour is prevented.
-      false
+      # Ensure that form submissions don't reload the page.
+      $('form:not([target="_blank"])').on 'submit', ->
+        # Return `false` to ensure default behaviour is prevented.
+        false
 
-    # Bind analytical tracking events to key footer buttons and links.
-    $('footer a[href*="template-extension.org"]').on 'click', ->
-      analytics.track 'Footer', 'Clicked', 'Homepage'
+      # Bind analytical tracking events to key footer buttons and links.
+      $('footer a[href*="template-extension.org"]').on 'click', ->
+        analytics.track 'Footer', 'Clicked', 'Homepage'
 
-    # Setup and configure the donation button in the footer.
-    $('#donation input[name="hosted_button_id"]').val ext.config.options.payPal
-    $('#donation').on 'submit', ->
-      analytics.track 'Footer', 'Clicked', 'Donate'
+      # Setup and configure the donation button in the footer.
+      $('#donation input[name="hosted_button_id"]').val ext.config.options.payPal
+      $('#donation').on 'submit', ->
+        analytics.track 'Footer', 'Clicked', 'Donate'
 
-    # Load the current option values.
-    do load
+      # Load the current option values.
+      do load
 
-    # Ensure first enabled input field in modals get focus when opened.
-    $('.modal').on 'shown', ->
-      $(this).find(':input:enabled:first').focus()
+      # Ensure first enabled input field in modals get focus when opened.
+      $('.modal').on 'shown', ->
+        $(this).find(':input:enabled:first').focus()
 
-    # Show OS-specific keyboard shortcut modifiers in the template wizard.
-    $('#template_shortcut_modifier').html ext.modifiers()
+      # Show OS-specific keyboard shortcut modifiers in the template wizard.
+      $('#template_shortcut_modifier').html ext.modifiers()
 
-    # Initialize all popovers, tooltips and *go-to* links.
-    $('[popover]').each ->
-      $this     = $ this
+      # Initialize all popovers, tooltips and *go-to* links.
+      $('[popover]').each ->
+        $this     = $ this
 
-      placement = $this.attr 'data-placement'
-      placement = if placement? then utils.trimToLower placement else 'right'
+        placement = $this.attr 'data-placement'
+        placement = if placement? then utils.trimToLower placement else 'right'
 
-      trigger   = $this.attr 'data-trigger'
-      trigger   = if trigger?   then utils.trimToLower trigger   else 'hover'
+        trigger   = $this.attr 'data-trigger'
+        trigger   = if trigger?   then utils.trimToLower trigger   else 'hover'
 
-      $this.popover {
-        placement
-        trigger
-        html:      yes
-        content:   ->
-          i18n.get $this.attr 'popover'
-      }
+        $this.popover {
+          placement
+          trigger
+          html:      yes
+          content:   ->
+            i18n.get $this.attr 'popover'
+        }
 
-      if trigger is 'manual'
-        $this.on 'click', ->
-          $this.popover 'toggle'
+        if trigger is 'manual'
+          $this.on 'click', ->
+            $this.popover 'toggle'
 
-    do activateTooltips
+      do activateTooltips
 
-    # Retrieve the initial height of the navigation bar.
-    navHeight = $('.navbar').height()
-    # Offset the screen by the initial height of the navigation bar when a *goto* link is clicked
-    # so that the relevant content isn't hidden.
-    $('[data-goto]').on 'click', ->
-      goto = $ $(this).attr 'data-goto'
-      pos  = goto.position()?.top or 0
-      pos -= navHeight if pos and pos >= navHeight
+      # Retrieve the initial height of the navigation bar.
+      navHeight = $('.navbar').height()
+      # Offset the screen by the initial height of the navigation bar when a *goto* link is clicked
+      # so that the relevant content isn't hidden.
+      $('[data-goto]').on 'click', ->
+        goto = $ $(this).attr 'data-goto'
+        pos  = goto.position()?.top or 0
+        pos -= navHeight if pos and pos >= navHeight
 
-      log.debug "Relocating view to include '#{goto.selector}' at #{pos}"
+        log.debug "Relocating view to include '#{goto.selector}' at #{pos}"
 
-      $(window).scrollTop pos
+        $(window).scrollTop pos
 
 # Initialize `options` when the DOM is ready.
 utils.ready -> options.init()

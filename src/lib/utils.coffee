@@ -107,9 +107,9 @@ utils = window.utils = new class Utils extends Class
   trimToUpper: (str = '') ->
     str.trim().toUpperCase()
 
-  # Convenient shorthand for `chrome.extension.getURL`.
+  # Convenient shorthand for `chrome.runtime.getURL`.
   url: ->
-    chrome.extension.getURL arguments...
+    chrome.runtime.getURL arguments...
 
 # Public classes
 # --------------

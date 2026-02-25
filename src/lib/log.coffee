@@ -17,8 +17,8 @@ LEVELS =
 # Private variables
 # -----------------
 
-# Ensure that all logs are sent to the background pages console.
-{console} = chrome.extension.getBackgroundPage()
+# Ensure a valid console is always available.
+{console} = globalThis
 
 # Private functions
 # -----------------
