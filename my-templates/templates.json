@@ -148,6 +148,13 @@
       "title": "Selection · HTML + Stylesheets"
     },
     {
+      "title": "Selection · Standalone HTML",
+      "enabled": true,
+      "shortcut": null,
+      "description": "Selection (or whole page if nothing is selected) as an .html file with the page's stylesheets and <style> blocks. About 80% faithful; use the Copy with styles bookmarklet for exact styles",
+      "content": "<!doctype html>\n<html>\n<head>\n<meta charset=\"utf-8\">\n<base href=\"{url}\">\n<title>{{title}}</title>\n{#styleSheets}<link rel=\"stylesheet\" href=\"{.}\">\n{/styleSheets}<style>\n{#selectAllHtml}style{/selectAllHtml}\n</style>\n</head>\n<body>\n{#selectionHtml}{selectionHtml}{/selectionHtml}{^selectionHtml}{#selectHtml}body{/selectHtml}{/selectionHtml}\n</body>\n</html>"
+    },
+    {
       "content": "{#kebabCase}{#tidy}{selection}{/tidy}{/kebabCase}-{#dateTime}yyMMdd{/dateTime}",
       "description": "Selected text as a kebab-case name with date, e.g. ch06 main -> ch06-main-261123",
       "enabled": true,
@@ -232,13 +239,6 @@
       "title": "Inventory · Link URLs"
     },
     {
-      "content": "# Links\n\n{#selectAllHtml}a[href]{/selectAllHtml}",
-      "description": "Every link as HTML, so link text and titles stay with the URL",
-      "enabled": true,
-      "shortcut": null,
-      "title": "Inventory · Links (HTML)"
-    },
-    {
       "content": "{#images}{.}\n{/images}",
       "description": "Every image URL on the page, one per line",
       "enabled": true,
@@ -246,25 +246,11 @@
       "title": "Inventory · Image URLs"
     },
     {
-      "content": "# Images\n\n{#selectAllHtml}img{/selectAllHtml}",
-      "description": "Every image as HTML, so alt text stays with the URL",
-      "enabled": true,
-      "shortcut": null,
-      "title": "Inventory · Images (HTML)"
-    },
-    {
       "content": "## Links\n\n{#links}{.}\n{/links}\n## Images\n\n{#images}{.}\n{/images}",
       "description": "Separate lists of link URLs and image URLs",
       "enabled": true,
       "shortcut": null,
       "title": "Inventory · Links+Images (URLs)"
-    },
-    {
-      "content": "## Links\n\n{#selectAllHtml}a[href]{/selectAllHtml}\n\n## Images\n\n{#selectAllHtml}img{/selectAllHtml}",
-      "description": "Links and images as HTML, keeping their attributes",
-      "enabled": true,
-      "shortcut": null,
-      "title": "Inventory · Links+Images (HTML)"
     },
     {
       "content": "{#tabs}{.}\n{/tabs}",

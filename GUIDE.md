@@ -19,6 +19,7 @@ This guide is for **tmplat 2.x**, the version installed in Chrome (extension ID 
 11. [Deprecated names](#11-deprecated-names)
 12. [What changed from 1.x](#12-what-changed-from-1x)
 13. [About this repo and tmplat.com](#13-about-this-repo-and-tmplatcom)
+14. [Bookmarklets](#14-bookmarklets)
 
 ---
 
@@ -54,6 +55,14 @@ Only **enabled** templates appear in the popup, the menu and shortcuts. Disabled
 
 **URL shortener.** Anything using `{#shorten}…{/shorten}` uses the shortener picked in settings: da.gd, spoo.me or your own YOURLS server.
 
+My own shortener (`d.nimdvir.com`) speaks the YOURLS language. To use it, go to Options › Settings › URL shorteners and set:
+
+- **Service:** YOURLS
+- **URL:** `https://d.nimdvir.com/api/yourls`
+- **Authentication:** signature token, using the admin passcode
+
+Short links then look like `d.nimdvir.com/bitm-330-syllabus`, with the name taken from the page address. The same page always gets the same link, and these links show as **tmplat** in the admin page. If the admin passcode changes, update it here too. To choose the name yourself, use the **Short link (name it)** bookmarklet (section 14).
+
 ---
 
 ## 3. Managing my templates
@@ -87,7 +96,7 @@ A file is accepted only if all of these hold:
 1. **Back up.** Open Options (right-click the tmplat icon › Options). Tick the select-all box, then choose **Export** and save the text.
 2. **(Optional) test the path.** Click **Import**, open `tmplat-test-1.txt`, copy all its text, paste it into the **Templates** box, then click **Read**. If one template ("Link · URL") is listed, the path works. Cancel, or import it and delete it afterwards.
 3. **Delete the old templates.** Tick select-all, then **untick the 7 built-in templates**: `URL`, `Short URL`, `Anchor`, `Encoded`, `BBCode`, `Markdown`, `Selection in Markdown`. Built-ins can't be deleted, and while any are ticked the Delete button stays greyed out. Click **Delete** and confirm. With 55 rows across two pages, do page 1, then page 2.
-4. **Import.** Click **Import**, paste the full text of `tmplat-import.txt` into the box (or use **Choose File**), and click **Read**. On the "Select the templates to be imported" screen, select all 46 and click **Import**.
+4. **Import.** Click **Import**, paste the full text of `tmplat-import.txt` into the box (or use **Choose File**), and click **Read**. On the "Select the templates to be imported" screen, select all 44 and click **Import**.
 5. **Hide the built-ins.** The clean set has its own copies of the 7 built-ins with tidy names. Select the 7 built-ins and choose **Disable** so they don't show twice in the popup. Optionally use **Bottom** to move them out of the way.
 
 Pasting the text is the safest route. **Choose File** should also work, but pasting removes any doubt about the file.
@@ -102,7 +111,7 @@ Pasting the text is the safest route. **Choose File** should also work, but past
 
 ## 4. My template set
 
-46 templates, grouped by the prefix in the title. All are enabled except the two marked *off*.
+44 templates, grouped by the prefix in the title. All are enabled except the two marked *off*.
 
 **Link · the current page as a link**
 
@@ -139,6 +148,7 @@ Pasting the text is the safest route. **Choose File** should also work, but past
 | Selection · Clean Text | Selection with extra spaces/tabs squeezed out (useful for messy Hebrew/RTL text) **(new)** |
 | Selection · HTML | Raw HTML of the selection |
 | Selection · HTML + Stylesheets | Selection HTML plus the page's stylesheet URLs |
+| Selection · Standalone HTML | A ready-to-save `.html` file: the selection (or the whole page), the page's stylesheets and its `<style>` blocks. Looks about 80% like the original; for exact styles use the **Copy with styles** bookmarklet |
 | Selection · Dated File Name | `ch06 main` → `ch06-main-261124` |
 
 **Research and course work**
@@ -166,11 +176,8 @@ Pasting the text is the safest route. **Choose File** should also work, but past
 | Title | Output |
 |---|---|
 | Inventory · Link URLs | Every link URL, one per line |
-| Inventory · Links (HTML) | Every link as HTML, so the link text stays attached |
 | Inventory · Image URLs | Every image URL, one per line |
-| Inventory · Images (HTML) | Every image as HTML, so the alt text stays attached |
 | Inventory · Links+Images (URLs) | Both URL lists under headings |
-| Inventory · Links+Images (HTML) | Both HTML lists under headings |
 | Inventory · Open Tab URLs | URLs of every tab in this window (titles aren't available) |
 
 **Util and Symbols**
@@ -269,6 +276,7 @@ Example: `{#dateTime}yyyy-MM-dd HH:mm{/dateTime}` → `2026-11-24 14:05`.
 - **Titles are limited to 32 characters**, and the import fails if any title is longer.
 - **Operations need a closing tag**, even ones with no input: `{#dateTime}{/dateTime}`.
 - **Never use the YOURLS secrets** (`options.urlShorteners.yourls.auth.password`, `.signature`, `.username`, or the old `yourlsPassword`, `yourlsSignature`, `yourlsUsername`). Anything referencing them puts the secret on your clipboard. `build.py` refuses them.
+- **`selectHtml` and friends return what's *inside* an element, not the element itself.** `{#selectAllHtml}a{/selectAllHtml}` gives the link *text* without the `href`, and `img` gives nothing, because images have no inside. Use `{#links}` and `{#images}` for URLs.
 - **Values are only computed when used.** A long template with many values costs nothing for the values it doesn't use.
 
 ---
@@ -417,7 +425,7 @@ Use as `{#name}input{/name}`. The input is rendered first, so it can contain oth
 |---|---|---|
 | `select` | `xpath` | Text of the first match |
 | `selectAll` | `xpathAll` | Text of every match, one per line |
-| `selectHtml` | `xpathHtml` | HTML of the first match |
+| `selectHtml` | `xpathHtml` | HTML inside the first match (not its own tag) |
 | `selectAllHtml` | `xpathAllHtml` | HTML of every match |
 | `selectMarkdown` | `xpathMarkdown` | First match as Markdown |
 | `selectAllMarkdown` | `xpathAllMarkdown` | Every match as Markdown |
@@ -499,3 +507,23 @@ This repo, `nimdvir/tmplat-chrome`, is the home for **my templates and this guid
 | [tmplat-extension/tmplat.com](https://github.com/tmplat-extension/tmplat.com) | The source of the website at tmplat.com. |
 
 The older copies under the `nim-dvir` account (`nim-dvir/tmplat`, `nim-dvir/tmplat.com`) are no longer needed and can be archived or deleted.
+
+---
+
+## 14. Bookmarklets
+
+A bookmarklet is a bookmark that runs a little code on the page you're on. These two do things tmplat can't. Their code is in [`bookmarklets/`](bookmarklets/).
+
+**To install:** download [`bookmarklets/install.html`](bookmarklets/install.html), open it in Chrome, and drag each blue button onto the bookmarks bar (show the bar with Ctrl + Shift + B).
+
+| Bookmarklet | What it does |
+|---|---|
+| **Copy with styles** | Select part of a page and click it. It copies that part with the exact styles the browser applied (colours, fonts, spacing, borders) written into each element. Paste into Gmail, Docs or Word and it looks the same. Paste into a code editor and you get a complete `.html` file. Scripts, classes and page-specific IDs are left out. Links and images keep full addresses. |
+| **Short link (name it)** | Asks what to call the short link (it suggests a name from the page title), then opens the `d.nimdvir.com` admin page with the link filled in. Click **Create** and the new short link is copied. The bookmark holds no passcode: if that tab isn't unlocked, the admin page asks for it. These links show as **bookmarklet** in the admin page. |
+
+Limits of **Copy with styles**:
+
+- Hover effects, animations and `::before`/`::after` decorations aren't copied.
+- Fonts that the page loads from its own server only appear where that font is installed.
+- To change either bookmarklet, edit its `.js` file and run `node build.mjs` in `bookmarklets/`. That rebuilds `install.html`.
+
