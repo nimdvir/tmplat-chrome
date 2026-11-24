@@ -274,6 +274,13 @@
       "title": "Util · URL Shortener Info"
     },
     {
+      "title": "Util · tmplat Guide",
+      "enabled": true,
+      "shortcut": null,
+      "description": "Copies the link to my tmplat guide on GitHub. Paste it into the address bar (tmplat can only copy, not open pages)",
+      "content": "https://github.com/nimdvir/tmplat-chrome/blob/master/GUIDE.md"
+    },
+    {
       "content": "⋆ ★ ☆ ✢ ✥ ✦ ✧ ❂ ❉ ✯ ✰ ✱ ✲ ✵ ✶ ✷ ✸ ✩ ✪ ✫ ✬ ✭ ✮ ⁑ ᕯ ⁂ ＊ ✹ ✺ ✻ ✼ ❈ ✳ ❇ ✴ 🔯 ✡ ☪️\n\n⭐ 🌟 💫 ✨ 🌠 ❄ 🌃 🤩",
       "description": "Star glyphs and emoji on two lines, for scanning",
       "enabled": true,
