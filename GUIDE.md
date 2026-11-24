@@ -96,7 +96,7 @@ A file is accepted only if all of these hold:
 1. **Back up.** Open Options (right-click the tmplat icon › Options). Tick the select-all box, then choose **Export** and save the text.
 2. **(Optional) test the path.** Click **Import**, open `tmplat-test-1.txt`, copy all its text, paste it into the **Templates** box, then click **Read**. If one template ("Link · URL") is listed, the path works. Cancel, or import it and delete it afterwards.
 3. **Delete the old templates.** Tick select-all, then **untick the 7 built-in templates**: `URL`, `Short URL`, `Anchor`, `Encoded`, `BBCode`, `Markdown`, `Selection in Markdown`. Built-ins can't be deleted, and while any are ticked the Delete button stays greyed out. Click **Delete** and confirm. With 55 rows across two pages, do page 1, then page 2.
-4. **Import.** Click **Import**, paste the full text of `tmplat-import.txt` into the box (or use **Choose File**), and click **Read**. On the "Select the templates to be imported" screen, select all 44 and click **Import**.
+4. **Import.** Click **Import**, paste the full text of `tmplat-import.txt` into the box (or use **Choose File**), and click **Read**. On the "Select the templates to be imported" screen, select all 45 and click **Import**.
 5. **Hide the built-ins.** The clean set has its own copies of the 7 built-ins with tidy names. Select the 7 built-ins and choose **Disable** so they don't show twice in the popup. Optionally use **Bottom** to move them out of the way.
 
 Pasting the text is the safest route. **Choose File** should also work, but pasting removes any doubt about the file.
@@ -111,7 +111,7 @@ Pasting the text is the safest route. **Choose File** should also work, but past
 
 ## 4. My template set
 
-44 templates, grouped by the prefix in the title. All are enabled except the two marked *off*.
+45 templates, grouped by the prefix in the title. All are enabled except the two marked *off*.
 
 **Link · the current page as a link**
 
@@ -186,6 +186,7 @@ Pasting the text is the safest route. **Choose File** should also work, but past
 |---|---|
 | Util · Today's Date | `2026-11-24` |
 | Util · URL Shortener Info | Active shortener and its non-secret settings, for troubleshooting |
+| Util · tmplat Guide | Link to this guide on GitHub, to paste into the address bar |
 | Symbols · Stars (inline) | Star glyphs and emoji on two lines |
 | Symbols · Stars (one per line) | Same, one per line |
 | Symbols · Hero Glyphs | Glyphs with what each evokes, tab-separated |
