@@ -1,0 +1,327 @@
+{
+  "templates": [
+    {
+      "content": "{url}",
+      "description": "The current URL",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Link · URL"
+    },
+    {
+      "content": "{#shorten}{url}{/shorten}",
+      "description": "The current URL, shortened",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Link · Short URL"
+    },
+    {
+      "content": "{title} | {url}",
+      "description": "Page title and URL separated by a pipe",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Link · Title | URL"
+    },
+    {
+      "content": "{title} - [{url}]({url})",
+      "description": "Page title followed by the full URL as a clickable Markdown link",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Link · Title + URL (Markdown)"
+    },
+    {
+      "content": "{title} - {#shorten}{url}{/shorten}",
+      "description": "Page title followed by the shortened URL",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Link · Title + Short URL"
+    },
+    {
+      "content": "[{title}]({url}{#options.templates.links.title} \"{title}\"{/options.templates.links.title})",
+      "description": "Markdown link: [title](url)",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Link · Markdown"
+    },
+    {
+      "content": "[{title}]({#shorten}{url}{/shorten})",
+      "description": "Markdown link using the page title and shortened URL",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Link · Markdown (short URL)"
+    },
+    {
+      "content": "[{title}]({url}) — added {#dateTime}yyyy-MM-dd{/dateTime}",
+      "description": "Markdown link plus the date you saved it, for reading lists and notes",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Link · Markdown + Date Added"
+    },
+    {
+      "content": "<a href=\"{#escapeHtml}{url}{/escapeHtml}\"{#options.templates.links.target} target=\"_blank\"{/options.templates.links.target}{#options.templates.links.title} title=\"{{title}}\"{/options.templates.links.title}>{{title}}</a>",
+      "description": "HTML <a> tag for the current URL and title; respects your link target/title options",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Link · HTML Anchor"
+    },
+    {
+      "content": "https://chatgpt.com/g/g-p-6a5d00ed3e6881919b97d80850a81035-vsc-and-github/c/6ab14b1f-9614-83ea-ba04-91e1b94b72d7",
+      "description": "Fixed link to the ChatGPT 'VSC and GitHub' project chat",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Link · ChatGPT (VSC + GitHub)"
+    },
+    {
+      "content": "{#encodeUriComponent}{url}{/encodeUriComponent}",
+      "description": "Current URL encoded for use inside another URL or query string",
+      "enabled": false,
+      "shortcut": null,
+      "title": "Link · Encoded URL"
+    },
+    {
+      "content": "[url={url}]{title}[/url]",
+      "description": "BBCode [url] tag for the current URL and title",
+      "enabled": false,
+      "shortcut": null,
+      "title": "Link · BBCode"
+    },
+    {
+      "content": "{title}\n{#shorten}{url}{/shorten}",
+      "description": "Plain text for Gmail: page title, then the short link on its own line (Gmail makes it clickable)",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Email · Title + Short URL"
+    },
+    {
+      "content": "“{#tidy}{selection}{/tidy}”\n— {title}\n{url}",
+      "description": "Selected text in quotation marks, then page title and link. Plain text, so it pastes cleanly into Gmail",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Email · Quote + Source"
+    },
+    {
+      "content": "{selectionMarkdown}",
+      "description": "The current selection as Markdown",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Selection · Markdown"
+    },
+    {
+      "content": "{selectionMarkdown}\n\nSource: [{title}]({url})",
+      "description": "Selection as Markdown, then a Source line with page title and URL",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Selection · MD + Source"
+    },
+    {
+      "content": "{selectionMarkdown}\n\nSource: [{title}]({url})\nCaptured: {#dateTime}yyyy-MM-dd{/dateTime}",
+      "description": "Selection as Markdown, then source title, URL and capture date",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Selection · MD + Source + Date"
+    },
+    {
+      "content": "> {#tidy}{selection}{/tidy}\n\n— [{title}]({url})",
+      "description": "Selection as a Markdown > quote plus a source link. Only the first paragraph gets the > mark",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Selection · Markdown Quote"
+    },
+    {
+      "content": "{#tidy}{selection}{/tidy}",
+      "description": "Selected text with runs of spaces/tabs squeezed and ends trimmed, e.g. messy Hebrew/RTL text. Does not remove hidden direction marks",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Selection · Clean Text"
+    },
+    {
+      "content": "{selectionHtml}",
+      "description": "Raw HTML of the current selection",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Selection · HTML"
+    },
+    {
+      "content": "Page: {title}\nURL: {url}\n\n## Selection HTML\n\n{selectionHtml}\n\n## Stylesheets\n\n{#styleSheets}{.}\n{/styleSheets}",
+      "description": "Selected HTML plus page title, URL and stylesheet URLs (tmplat can't read computed CSS)",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Selection · HTML + Stylesheets"
+    },
+    {
+      "content": "{#kebabCase}{#tidy}{selection}{/tidy}{/kebabCase}-{#dateTime}yyMMdd{/dateTime}",
+      "description": "Selected text as a kebab-case name with date, e.g. ch06 main -> ch06-main-261123",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Selection · Dated File Name"
+    },
+    {
+      "content": "# {title}\n\nAuthor: {author}\nDescription: {description}\nPublished: {#meta}article:published_time{/meta}\nLast Modified: {lastModified}\nCaptured: {#dateTime}yyyy-MM-dd HH:mm{/dateTime}\nURL: {url}\nShort URL: {#shorten}{url}{/shorten}\nKeywords: {keywords}\n\n## Content\n\n{#selectionMarkdown}{selectionMarkdown}{/selectionMarkdown}{^selectionMarkdown}{markdown}{/selectionMarkdown}",
+      "description": "Markdown note with metadata; uses your selection if any, otherwise the whole page",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Research · Capture Note"
+    },
+    {
+      "content": "{#author}{author}. {/author}({#lastModified}yyyy, LLLL d{/lastModified}). {title}. {host}. {url}",
+      "description": "Best-effort APA web citation. Date is the browser's last-modified date, so check it",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Research · APA Citation"
+    },
+    {
+      "content": "https://scholar.google.com/scholar?q={#encodeUriComponent}{#selection}{#tidy}{selection}{/tidy}{/selection}{^selection}{title}{/selection}{/encodeUriComponent}",
+      "description": "Google Scholar search URL for the selected text (or the page title if nothing is selected). Paste into the address bar",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Research · Scholar Search"
+    },
+    {
+      "content": "## {title}\n\nCourse: BITM 330\nDate: {#dateTime}yyyy-MM-dd{/dateTime}\nLink: {url}\n\n{#selectionMarkdown}{selectionMarkdown}{/selectionMarkdown}{^selectionMarkdown}Notes:\n- {/selectionMarkdown}",
+      "description": "Markdown note header for a BITM 330 course page; includes your selection if any, otherwise an empty Notes list",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Course · BITM 330 Note"
+    },
+    {
+      "content": "Title: {title}\nAuthor: {author}\nDescription: {description}\nPublished: {#meta}article:published_time{/meta}\nLast Modified: {lastModified}\nURL: {url}\nShort URL: {#shorten}{url}{/shorten}",
+      "description": "Title, author, description, published and modified dates, URL and short URL",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Page · Reference"
+    },
+    {
+      "content": "Title: {title}\nURL: {url}\nShort URL: {#shorten}{url}{/shorten}\nDescription: {description}\nAuthor: {author}\nPublished: {#meta}article:published_time{/meta}\nArticle Modified: {#meta}article:modified_time{/meta}\nLast Modified: {lastModified}\nKeywords: {keywords}\nFavicon: {faviconUrl}\nHost: {host}\nOrigin: {origin}\nPath: {path}\nQuery: {search}\nHash: {hash}\nReferrer: {referrer}\nCharacter Set: {characterSet}\nLocale: {locale}",
+      "description": "Everything in Reference plus keywords, favicon, host, path, query, referrer, charset and locale",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Page · Metadata (full)"
+    },
+    {
+      "content": "{#selectMarkdown}article, main{/selectMarkdown}",
+      "description": "Only the first <article> or <main> element, as Markdown (skips menus and footers)",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Page · Article Markdown"
+    },
+    {
+      "content": "Title: {title}\nURL: {url}\n\nPage in MarkDown: \n=================\n{markdown}",
+      "description": "Title and URL, then the whole page as Markdown",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Page · Full Markdown"
+    },
+    {
+      "content": "{text}",
+      "description": "All text on the page",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Page · Plain Text"
+    },
+    {
+      "content": "{html}",
+      "description": "Full HTML of the page",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Page · HTML"
+    },
+    {
+      "content": "{#links}{.}\n{/links}",
+      "description": "Every link URL on the page, one per line",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Inventory · Link URLs"
+    },
+    {
+      "content": "# Links\n\n{#selectAllHtml}a[href]{/selectAllHtml}",
+      "description": "Every link as HTML, so link text and titles stay with the URL",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Inventory · Links (HTML)"
+    },
+    {
+      "content": "{#images}{.}\n{/images}",
+      "description": "Every image URL on the page, one per line",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Inventory · Image URLs"
+    },
+    {
+      "content": "# Images\n\n{#selectAllHtml}img{/selectAllHtml}",
+      "description": "Every image as HTML, so alt text stays with the URL",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Inventory · Images (HTML)"
+    },
+    {
+      "content": "## Links\n\n{#links}{.}\n{/links}\n## Images\n\n{#images}{.}\n{/images}",
+      "description": "Separate lists of link URLs and image URLs",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Inventory · Links+Images (URLs)"
+    },
+    {
+      "content": "## Links\n\n{#selectAllHtml}a[href]{/selectAllHtml}\n\n## Images\n\n{#selectAllHtml}img{/selectAllHtml}",
+      "description": "Links and images as HTML, keeping their attributes",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Inventory · Links+Images (HTML)"
+    },
+    {
+      "content": "{#tabs}{.}\n{/tabs}",
+      "description": "URLs of every tab in this window, one per line (titles aren't available)",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Inventory · Open Tab URLs"
+    },
+    {
+      "content": "{#dateTime}yyyy-MM-dd{/dateTime}",
+      "description": "Today's date as yyyy-MM-dd (e.g. 2026-11-24)",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Util · Today's Date"
+    },
+    {
+      "content": "Provider: {options.urlShorteners.provider}\nCurrent URL: {url}\nShort URL: {#shorten}{url}{/shorten}\nYOURLS URL: {options.urlShorteners.yourls.url}",
+      "description": "Active shortener and its non-secret settings (for troubleshooting)",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Util · URL Shortener Info"
+    },
+    {
+      "content": "⋆ ★ ☆ ✢ ✥ ✦ ✧ ❂ ❉ ✯ ✰ ✱ ✲ ✵ ✶ ✷ ✸ ✩ ✪ ✫ ✬ ✭ ✮ ⁑ ᕯ ⁂ ＊ ✹ ✺ ✻ ✼ ❈ ✳ ❇ ✴ 🔯 ✡ ☪️\n\n⭐ 🌟 💫 ✨ 🌠 ❄ 🌃 🤩",
+      "description": "Star glyphs and emoji on two lines, for scanning",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Symbols · Stars (inline)"
+    },
+    {
+      "content": "⋆\n★\n☆\n✢\n✥\n✦\n✧\n❂\n❉\n✯\n✰\n✱\n✲\n✵\n✶\n✷\n✸\n✩\n✪\n✫\n✬\n✭\n✮\n⁑\nᕯ\n⁂\n＊\n✹\n✺\n✻\n✼\n❈\n✳\n❇\n✴\n🔯\n✡\n☪️\n\n⭐\n🌟\n💫\n✨\n🌠\n❄\n🌃\n🤩",
+      "description": "Same stars, one per line for easy copying",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Symbols · Stars (one per line)"
+    },
+    {
+      "content": "🕸️\tSpider-Man style web symbol\nⒶ\tAvengers-style A symbol\n⍟\tCaptain America style star symbol\n⎊\tIron Man style arc/reactor symbol\nϟ\tThor style lightning symbol\n۞\tDoctor Strange style mystic symbol\n✇\tHulk\n✵\tCaptain Marvel symbol\n४\tLoki symbol\n𖤍\tValkyrie symbol\n꘩\tAnt-man symbol\nᗢ\tScarlet Witch symbol\n✪\tWinter Soldier symbol\n➳\tClint Barton symbol\n◊\tVision symbol\n➃\tFantastic Four symbol\n⩔\tFalcon symbol\n⧗\tBlack Widow symbol",
+      "description": "Unicode glyphs with what each one evokes, tab-separated",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Symbols · Hero Glyphs"
+    },
+    {
+      "content": "Circled Letters\nUppercase (A–Z)\nⒶ Ⓑ Ⓒ Ⓓ Ⓔ Ⓕ Ⓖ Ⓗ Ⓘ Ⓙ Ⓚ Ⓛ Ⓜ Ⓝ Ⓞ Ⓟ Ⓠ Ⓡ Ⓢ Ⓣ Ⓤ Ⓥ Ⓦ Ⓧ Ⓨ Ⓩ\n\nLowercase (a–z)\nⓐ ⓑ ⓒ ⓓ ⓔ ⓕ ⓖ ⓗ ⓘ ⓙ ⓚ ⓛ ⓜ ⓝ ⓞ ⓟ ⓠ ⓡ ⓢ ⓣ ⓤ ⓥ ⓦ ⓧ ⓨ ⓩ\n\nInverted / Filled Uppercase (A–Z)\n🅐 🅑 🅒 🅓 🅔 🅕 🅖 🅗 🅘 🅙 🅚 🅛 🅜 🅝 🅞 🅟 🅠 🅡 🅢 🅣 🅤 🅥 🅦 🅧 🅨 🅩",
+      "description": "Circled and filled letters A–Z",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Symbols · Circled Letters"
+    },
+    {
+      "content": "Circled Numbers\nCircled Digits & Numbers (0–50)\n\n0–20: ⓪ ① ② ③ ④ ⑤ ⑥ ⑦ ⑧ ⑨ ⑩ ⑪ ⑫ ⑬ ⑭ ⑮ ⑯ ⑰ ⑱ ⑲ ⑳\n\n21–35: ㉑ ㉒ ㉓ ㉔ ㉕ ㉖ ㉗ ㉘ ㉙ ㉚ ㉛ ㉜ ㉝ ㉞ ㉟\n\n36–50: ㊱ ㊲ ㊳ ㊴ ㊵ ㊶ ㊷ ㊸ ㊹ ㊺ ㊻ ㊼ ㊽ ㊾ ㊿\n\nInverted / Filled Circled Numbers\n\nFilled White-on-Black (0–10): ⓿ ❶ ❷ ❸ ❹ ❺ ❻ ❼ ❽ ❾ ❿\n\nFilled Sans-Serif / Dingbat (1–10): ➊ ➋ ➌ ➍ ➎ ➏ ➐ ➑ ➒ ➓\n\nFilled Extended (11–20): ⓫ ⓬ ⓭ ⓮ ⓯ ⓰ ⓱ ⓲ ⓳ ⓴",
+      "description": "Circled and filled numbers 0–50",
+      "enabled": true,
+      "shortcut": null,
+      "title": "Symbols · Circled Numbers"
+    }
+  ],
+  "version": 1
+}

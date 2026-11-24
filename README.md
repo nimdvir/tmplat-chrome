@@ -1,3 +1,5 @@
+> **My templates and the tmplat guide:** see [GUIDE.md](GUIDE.md) and [my-templates/](my-templates/). The source code below is the old 1.2.9 version; the installed extension is 2.x.
+
      ______                           ___             __
     /\__  _\                         /\_ \           /\ \__
     \/_/\ \/    __    ___ ___   _____\//\ \      __  \ \ ,_\    __
