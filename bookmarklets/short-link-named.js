@@ -1,5 +1,6 @@
-// Short link (name it): asks what to call the short link, then opens the d.nimdvir.com admin
-// page with the form filled in. Click Create there and the new link is copied to the clipboard.
+// Short link (name it): asks what to call the short link, then opens the dr.nimdvir.com admin
+// page with the form filled in. Click Create there and "Title - https://dr.nimdvir.com/<name>"
+// is copied to the clipboard (the admin page's URL button copies just the link).
 // No passcode is stored in the bookmark; the admin page asks for it if the tab isn't unlocked.
 (() => {
   const suggestion = document.title
@@ -20,7 +21,7 @@
     alert('Use 1-48 lowercase letters, numbers, - or _, starting with a letter or number.');
     return;
   }
-  const target = new URL('https://d.nimdvir.com/admin');
+  const target = new URL('https://dr.nimdvir.com/admin');
   target.searchParams.set('url', location.href);
   target.searchParams.set('title', document.title);
   target.searchParams.set('slug', slug);

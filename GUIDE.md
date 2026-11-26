@@ -55,19 +55,21 @@ Only **enabled** templates appear in the popup, the menu and shortcuts. Disabled
 
 **URL shortener.** Anything using `{#shorten}…{/shorten}` uses the shortener picked in settings: da.gd, spoo.me or your own YOURLS server.
 
-My own shortener (`d.nimdvir.com`) speaks the YOURLS language. To use it, go to Options › Settings › URL shorteners and set:
+My own shortener (`dr.nimdvir.com`) speaks the YOURLS language. To use it, go to Options › Settings › URL shorteners and set:
 
 - **Service:** YOURLS
-- **URL:** `https://d.nimdvir.com/api/yourls`
+- **URL:** `https://dr.nimdvir.com/api/yourls`
 - **Authentication:** signature token, using the admin passcode
 
-Short links then look like `d.nimdvir.com/bitm-330-syllabus`, with the name taken from the page address. The same page always gets the same link, and these links show as **tmplat** in the admin page. If the admin passcode changes, update it here too. Three ways to name the link:
+Short links then look like `dr.nimdvir.com/bitm-330-syllabus`, with the name taken from the page address. (Since 2026-11-25 every new link comes back as `dr.nimdvir.com`, even if the URL above still says the old `d.nimdvir.com`. Older `d.nimdvir.com` and `n.nimdvir.com` links keep working.)
+
+**Default copy:** **Link · Title + Short URL** gives `Title - https://dr.nimdvir.com/<name>`. To make it what the toolbar button does, set Options › Settings › toolbar button to run that template. **Link · Short URL** stays for copying just the URL. The same page always gets the same link, and these links show as **tmplat** in the admin page. If the admin passcode changes, update it here too. Three ways to name the link:
 
 | Template | Name |
 |---|---|
 | Link · Short URL | Automatic, from the page address. The same page always gets the same link |
-| Link · Short URL · Selection | The text you selected: select "BITM 330 notes" → `d.nimdvir.com/bitm-330-notes`. English letters and numbers only (accents are dropped; Hebrew is refused). If the name is used for another page, tmplat says it couldn't shorten |
-| Link · Short URL · Random | A new random name like `d.nimdvir.com/sleepy-otter`, every time |
+| Link · Short URL · Selection | The text you selected: select "BITM 330 notes" → `dr.nimdvir.com/bitm-330-notes`. English letters and numbers only (accents are dropped; Hebrew is refused). If the name is used for another page, tmplat says it couldn't shorten |
+| Link · Short URL · Random | A new random name like `dr.nimdvir.com/sleepy-otter`, every time |
 
 To type a brand-new name, use the **Short link (name it)** bookmarklet (section 14).
 
@@ -530,7 +532,7 @@ A bookmarklet is a bookmark that runs a little code on the page you're on. These
 | Bookmarklet | What it does |
 |---|---|
 | **Copy with styles** | Select part of a page and click it. It copies that part with the exact styles the browser applied (colours, fonts, spacing, borders) written into each element. Paste into Gmail, Docs or Word and it looks the same. Paste into a code editor and you get a complete `.html` file. Scripts, classes and page-specific IDs are left out. Links and images keep full addresses. |
-| **Short link (name it)** | Asks what to call the short link (it suggests a name from the page title), then opens the `d.nimdvir.com` admin page with the link filled in. Click **Create** and the new short link is copied. The bookmark holds no passcode: if that tab isn't unlocked, the admin page asks for it. These links show as **bookmarklet** in the admin page. |
+| **Short link (name it)** | Asks what to call the short link (it suggests a name from the page title), then opens the `dr.nimdvir.com` admin page with the link filled in. Click **Create** and `Title - https://dr.nimdvir.com/<name>` is copied (the **URL** button in the list copies just the link). The bookmark holds no passcode: if that tab isn't unlocked, the admin page asks for it. These links show as **bookmarklet** in the admin page. |
 
 Limits of **Copy with styles**:
 

@@ -18,14 +18,14 @@
       "title": "Link · Short URL · Selection",
       "enabled": true,
       "shortcut": null,
-      "description": "Short link named after the text you selected (e.g. \"BITM 330 notes\" → d.nimdvir.com/bitm-330-notes). Nothing selected: automatic name. English letters and numbers only",
+      "description": "Short link named after the text you selected (e.g. \"BITM 330 notes\" → dr.nimdvir.com/bitm-330-notes). Nothing selected: automatic name. English letters and numbers only",
       "content": "{#shorten}{url}#~name={#kebabCase}{#deburr}{#tidy}{selection}{/tidy}{/deburr}{/kebabCase}{/shorten}"
     },
     {
       "title": "Link · Short URL · Random",
       "enabled": true,
       "shortcut": null,
-      "description": "A new short link with a random name like d.nimdvir.com/sleepy-otter, even if the page already has one",
+      "description": "A new short link with a random name like dr.nimdvir.com/sleepy-otter, even if the page already has one",
       "content": "{#shorten}{url}#~random{/shorten}"
     },
     {
