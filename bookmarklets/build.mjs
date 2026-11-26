@@ -5,7 +5,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 
 const items = [
   { file: 'copy-with-styles.js', name: 'Copy with styles', about: 'Select part of a page, click it, and paste the HTML with its exact styles. Rich-text apps (Gmail, Docs) get it formatted; code editors get the HTML source.' },
-  { file: 'short-link-named.js', name: 'Short link (name it)', about: 'Asks what to call the short link, then opens your d.nimdvir.com admin page with it filled in. Click Create and the link is copied.' },
+  { file: 'short-link-named.js', name: 'Short link (name it)', about: 'Asks what to call the short link, then opens your dr.nimdvir.com admin page with it filled in. Click Create and "Title - link" is copied.' },
 ];
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
